@@ -1,11 +1,22 @@
+//TODO: upper camel case file name
+
 import React from 'react';
 import Square from '../square/square';
 
-class Board extends React.Component {
+class Board extends React.Component { //TODO: either add PropTypes or one line export default
     renderSquare(i) {
         return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />;
     }
     render() {
+		//TODO: separate board row to a component on its on,
+		//TODO: and use repeat in each row for the squares and in here repeat the row with _.map
+		// const {squares, onClick} = this.props;
+		// return (
+		// 	{
+		// 		_.map(squares, (val, index) => <Square value={val} onClick={() => onClick(index)} />)
+		// 	}
+		// )
+
         return (
             <div>
                 <div className="board-row">
