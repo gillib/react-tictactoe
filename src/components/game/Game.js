@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import Board from '../board/Board';
 import GameService from './Game.service';
@@ -16,8 +17,8 @@ export default class Game extends React.Component {
         this.setState(this.game);
     }
 
-    static renderMoves(history) {
-        return history.map((step, move) => {
+    renderMoves() {
+        return _.map(this.game.history, (step, move) => {
             const desc = move ?
                 'Move #' + move :
                 'Game start';
@@ -29,22 +30,20 @@ export default class Game extends React.Component {
         });
     }
 
-    static renderStatus(winner, xIsNext) {
-        return winner ? 'Winner: ' + winner : 'Next player: ' + (xIsNext ? 'X' : 'O');
+    renderStatus() {
+        return this.game.winner ? 'Winner: ' + this.game.winner : 'Next player: ' + (this.game.xIsNext ? 'X' : 'O');
     }
 
     render() {
-        const {history, stepNumber, xIsNext, winner} = this.game;
-        const current = history[stepNumber];
-
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board squares={current.squares} onClick={(i) => this.handleClick(i)}/>
+                    <Board squares={this.game.currentStep.squares}
+                           onClick={(squareIndex) => this.handleClick(squareIndex)}/>
                 </div>
                 <div className="game-info">
-                    <div>{Game.renderStatus(winner, xIsNext)}</div>
-                    <ol>{Game.renderMoves(history)}</ol>
+                    <div>{this.renderStatus()}</div>
+                    <ol>{this.renderMoves()}</ol>
                 </div>
             </div>
         );

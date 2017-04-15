@@ -34,20 +34,26 @@ export default class GameService {
         Object.assign(this, gameDefaults, game);
     }
 
+    get currentStep() {
+        return this.history[this.stepNumber];
+    }
+
     makeStep(squareIndex) {
-        this.history = this.history.slice(0, this.stepNumber + 1);
-        const current = this.history[this.history.length - 1];
+        let {history, stepNumber, xIsNext, winner} = this;
+
+        history = history.slice(0, stepNumber + 1);
+        const current = history[history.length - 1];
         const squares = current.squares.slice();
 
-        if (this.winner || squares[squareIndex]) {
+        if (winner || squares[squareIndex]) {
             return;
         }
 
-        squares[squareIndex] = this.xIsNext ? 'X' : 'O';
+        squares[squareIndex] = xIsNext ? 'X' : 'O';
 
-        this.stepNumber = this.history.length;
-        this.history = this.history.concat([{squares}]);
-        this.xIsNext = !this.xIsNext;
+        this.stepNumber = history.length;
+        this.history = history.concat([{squares}]);
+        this.xIsNext = !xIsNext;
     }
 
     jumpToStep(step) {

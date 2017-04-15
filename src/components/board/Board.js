@@ -1,7 +1,7 @@
-import React from 'react';
-import Square from '../square/Square';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Square from '../square/Square';
 
 const ROW_LENGTH = 3;
 
@@ -16,9 +16,7 @@ export default class Board extends React.Component {
     }
 
     render() {
-        const {squares} = this.props;
-
-        const squareRows = _.chunk(squares, ROW_LENGTH);
+        const squareRows = _.chunk(this.props.squares, ROW_LENGTH);
         const squaresView = _.map(squareRows, (row, index) => this.renderRow(row, index));
 
         return (
