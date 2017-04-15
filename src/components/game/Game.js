@@ -2,8 +2,6 @@ import React from 'react';
 import Board from '../board/Board';
 import GameService from './Game.service';
 
-const gameService = new GameService();
-
 export default class Game extends React.Component {
     state = {
         history: [{
@@ -36,7 +34,7 @@ export default class Game extends React.Component {
         }
 
         squares[squareIndex] = xIsNext ? 'X' : 'O';
-        this.setState({winner: gameService.calculateWinner(squares)});
+        this.setState({winner: GameService.calculateWinner(squares)});
 
         this.setState({
             history: history.concat([{squares}]),
