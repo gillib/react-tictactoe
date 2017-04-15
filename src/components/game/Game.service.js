@@ -1,5 +1,17 @@
+const gameDefaults = {
+    history: [{
+        squares: Array(9).fill(null)
+    }],
+    xIsNext: true,
+    stepNumber: 0,
+    winner: false
+};
+
 export default class GameService {
-    static calculateWinner(squares) {
+    static CalculateWinner(game) {
+        const current = game.history[game.history.length - 1];
+        const squares = current.squares.slice();
+
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -16,6 +28,33 @@ export default class GameService {
                 return squares[a];
             }
         }
-        return null;
+    }
+
+    constructor(game) {
+        Object.assign(this, gameDefaults, game);
+    }
+
+    makeStep(squareIndex) {
+        this.history = this.history.slice(0, this.stepNumber + 1);
+        const current = this.history[this.history.length - 1];
+        const squares = current.squares.slice();
+
+        if (this.winner || squares[squareIndex]) {
+            return;
+        }
+
+        squares[squareIndex] = this.xIsNext ? 'X' : 'O';
+
+        this.stepNumber = this.history.length;
+        this.history = this.history.concat([{squares}]);
+        this.xIsNext = !this.xIsNext;
+    }
+
+    jumpToStep(step) {
+        if (step < this.stepNumber) {
+            this.xIsNext = (!(step % 2));
+            this.stepNumber = step;
+            this.winner = false;
+        }
     }
 }
