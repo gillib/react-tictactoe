@@ -36,6 +36,14 @@ ol, ul {
     outline: none;
 }
 
+.square.selected {
+    background-color: yellow;
+}
+
+.step .selected {
+    font-weight: bold;
+}
+
 .kbd-navigation .square:focus {
     background: #ddd;
 }

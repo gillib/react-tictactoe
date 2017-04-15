@@ -6,8 +6,15 @@ import Square from '../Square/Square';
 const ROW_LENGTH = 3;
 
 export default class Board extends React.Component {
+    isWinningSquare(squareIndex) {
+        const {winningSquares} = this.props;
+        return winningSquares ? winningSquares.indexOf(squareIndex) !== -1 : false;
+    }
+
     renderSquare(value, squareIndex) {
-        return <Square key={squareIndex} value={value} onClick={() => this.props.onClick(squareIndex)}/>;
+        return <Square key={squareIndex} value={value}
+                       isWinning={this.isWinningSquare(squareIndex)}
+                       onClick={() => this.props.onClick(squareIndex)}/>;
     }
 
     renderRow(squaresRow, rowIndex) {

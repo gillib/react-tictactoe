@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 export default function Square(props) {
     return (
-        <button className="square" onClick={() => props.onClick()}>
+        <button className={classNames('square', {'selected': props.isWinning})} onClick={() => props.onClick()}>
             {props.value}
         </button>
     );

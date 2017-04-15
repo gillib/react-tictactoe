@@ -1,10 +1,11 @@
 const gameDefaults = {
     history: [{
-        squares: Array(9).fill(null)
+        squares: Array(9).fill(null), //step 0 is an empty board
+        squarePlayed: null,
+        win: false
     }],
     xIsNext: true,
-    stepNumber: 0,
-    winner: false
+    stepNumber: 0
 };
 
 export default class GameService {
@@ -25,7 +26,10 @@ export default class GameService {
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
+                return {
+                    winner: squares[a],
+                    squares: lines[i]
+                }
             }
         }
     }
@@ -39,28 +43,25 @@ export default class GameService {
     }
 
     makeStep(squareIndex) {
-        let {history, stepNumber, xIsNext, winner} = this;
+        let {history, stepNumber, xIsNext} = this;
 
         history = history.slice(0, stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
 
-        if (winner || squares[squareIndex]) {
+        if (current.win || squares[squareIndex]) {
             return;
         }
 
         squares[squareIndex] = xIsNext ? 'X' : 'O';
 
         this.stepNumber = history.length;
-        this.history = history.concat([{squares}]);
+        this.history = history.concat([{squares, squarePlayed: squareIndex}]);
         this.xIsNext = !xIsNext;
     }
 
-    jumpToStep(step) {
-        if (step < this.stepNumber) {
-            this.xIsNext = (!(step % 2));
-            this.stepNumber = step;
-            this.winner = false;
-        }
+    jumpToStep(stepNumber) {
+        this.xIsNext = (!(stepNumber % 2));
+        this.stepNumber = stepNumber;
     }
 }
