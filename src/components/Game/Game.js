@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import Board from '../board/Board';
+import Board from '../Board/Board';
 import GameService from './Game.service';
 
 export default class Game extends React.Component {

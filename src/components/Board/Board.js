@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Square from '../square/Square';
+import Square from '../Square/Square';
 
 const ROW_LENGTH = 3;
 
