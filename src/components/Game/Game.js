@@ -1,51 +1,21 @@
-import _ from 'lodash';
 import React from 'react';
-import classNames from 'classnames';
 import Board from '../Board/Board';
+import MovesHistory from '../MovesHistory/MovesHistory';
 import GameService from './Game.service';
 
 
 export default class Game extends React.Component {
     game = new GameService();
-    selectedStep = null;
-    sortMovesDesc = false;
 
     jumpToStep(step) {
         this.game.jumpToStep(step);
-        this.selectedStep = step;
-        this.setState({game: this.game, selectedStep: this.selectedStep});
+        this.setState(this.game);
     }
 
-    handleClick(squareIndex) {
-        this.selectedStep = null;
+    makeStep(squareIndex) {
         this.game.makeStep(squareIndex);
         this.game.currentStep.win = GameService.CalculateWinner(this.game);
-        this.setState({game: this.game, selectedStep: this.selectedStep});
-    }
-
-    reverseStepList() {
-        this.sortMovesDesc = !this.sortMovesDesc;
-        this.setState({sortMovesDesc: this.sortMovesDesc});
-    }
-
-    renderMoves() {
-        const movesListView = _.map(this.game.history, (step, stepNumber) => {
-            let desc = 'Game start';
-            if (stepNumber > 0) {
-                const playX = parseInt(step.squarePlayed / 3, 10),
-                    playY = parseInt(step.squarePlayed % 3, 10);
-                desc = `Move #${stepNumber}: (${playX}, ${playY})`;
-            }
-
-            return (
-                <li key={stepNumber} className="step">
-                    <a href="#" className={classNames({'selected': stepNumber === this.selectedStep})}
-                       onClick={() => this.jumpToStep(stepNumber)}>{desc}</a>
-                </li>
-            );
-        });
-
-        return this.sortMovesDesc ? movesListView.reverse() : movesListView;
+        this.setState(this.game);
     }
 
     renderStatus(win) {
@@ -59,14 +29,13 @@ export default class Game extends React.Component {
                 <div className="game-board">
                     <Board squares={squares}
                            winningSquares={win ? win.squares : null}
-                           onClick={(squareIndex) => this.handleClick(squareIndex)}/>
+                           squareClicked={(squareIndex) => this.makeStep(squareIndex)}/>
                 </div>
                 <div className="game-info">
                     <div>{this.renderStatus(win)}</div>
-                    <button onClick={() => this.reverseStepList()}>
-                        {this.sortMovesDesc ? 'Desc' : 'Asc'}
-                    </button>
-                    <ol>{this.renderMoves()}</ol>
+                    <MovesHistory history={this.game.history}
+                                  stepNumber={this.game.stepNumber}
+                                  jumpToStep={(step) => this.jumpToStep(step)}/>
                 </div>
             </div>
         );

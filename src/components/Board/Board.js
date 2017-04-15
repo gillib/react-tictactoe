@@ -12,9 +12,10 @@ export default class Board extends React.Component {
     }
 
     renderSquare(value, squareIndex) {
-        return <Square key={squareIndex} value={value}
+        return <Square key={squareIndex}
+                       value={value}
                        isWinning={this.isWinningSquare(squareIndex)}
-                       onClick={() => this.props.onClick(squareIndex)}/>;
+                       onClick={() => this.props.squareClicked(squareIndex)}/>;
     }
 
     renderRow(squaresRow, rowIndex) {
@@ -33,6 +34,7 @@ export default class Board extends React.Component {
 }
 
 Board.propTypes = {
-    onClick: PropTypes.func.isRequired,
-    squares: PropTypes.array.isRequired
+    squares: PropTypes.array.isRequired,
+    winningSquares: PropTypes.array,
+    squareClicked: PropTypes.func.isRequired
 };
