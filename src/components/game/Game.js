@@ -7,16 +7,12 @@ export default class Game extends React.Component {
 
     jumpTo(step) {
         this.game.jumpToStep(step);
-
-        this.game = new GameService(this.game);
         this.setState(this.game);
     }
 
     handleClick(squareIndex) {
         this.game.makeStep(squareIndex);
         this.game.winner = GameService.CalculateWinner(this.game);
-
-        this.game = new GameService(this.game);
         this.setState(this.game);
     }
 
