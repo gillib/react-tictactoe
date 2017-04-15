@@ -10,8 +10,7 @@ const gameDefaults = {
 
 export default class GameService {
     static CalculateWinner(game) {
-        const current = game.history[game.history.length - 1];
-        const squares = current.squares.slice();
+        const squares = game.currentStep.squares.slice();
 
         const lines = [
             [0, 1, 2],
@@ -46,7 +45,7 @@ export default class GameService {
         let {history, stepNumber, xIsNext} = this;
 
         history = history.slice(0, stepNumber + 1);
-        const current = history[history.length - 1];
+        const current = this.currentStep;
         const squares = current.squares.slice();
 
         if (current.win || squares[squareIndex]) {
@@ -55,7 +54,7 @@ export default class GameService {
 
         squares[squareIndex] = xIsNext ? 'X' : 'O';
 
-        this.stepNumber = history.length;
+        this.stepNumber++;
         this.history = history.concat([{squares, squarePlayed: squareIndex}]);
         this.xIsNext = !xIsNext;
     }
